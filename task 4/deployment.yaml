@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-ingress
+  namespace: my-kubernetes
+spec:
+  replicas: 2
+  template: 
+    metadata:
+      labels:
+        app: ingress-app
+    spec:
+      volumes:
+        - name: JobApplicationname
+          hostPath:
+            path: ./JobApplication
+            type: DirectoryOrCreate
+      containers:
+        - name: my-nginx-2
+          image: nginx:latest
+          volumeMounts:
+            - mountPath: /JobApplication
+              name: JobApplicationname
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            
+  selector:
+    matchLabels:
+      app: ingress-app
